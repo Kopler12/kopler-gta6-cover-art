@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VICE HEAT — GTA-style Cover Maker</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">VH</span>
+    <div class="brand-text">
+      <h1>VICE HEAT</h1>
+      <p>GTA-style cover maker &middot; runs offline, photos never leave your machine</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="size-pill" id="sizeLabel">1080 &times; 1080</span>
+  </div>
+</header>
+
+<main class="studio">
+  <aside class="controls" id="controls">
+    <section>
+      <h2><span class="step">1</span> Photo</h2>
+      <div class="dropzone" id="dropzone" tabindex="0">
+        <span class="drop-icon" aria-hidden="true">&#8682;</span>
+        <span>Drop a photo here, or</span>
+        <button id="uploadBtn" type="button">choose a photo</button>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+      </div>
+      <div class="samples" id="samples">
+        <button class="sample" type="button" data-photo="boulevard">
+          <img src="./samples/boulevard.jpg" alt="Boulevard sample photo">
+          <span>Boulevard</span>
+        </button>
+        <button class="sample" type="button" data-photo="pier">
+          <img src="./samples/pier.jpg" alt="Pier sample photo">
+          <span>Pier</span>
+        </button>
+      </div>
+      <p class="hint">Your photos are read on this machine only. Nothing is uploaded.</p>
+    </section>
+
+    <section>
+      <h2><span class="step">2</span> Layout</h2>
+      <div class="layouts" id="layouts">
+        <button class="layout" type="button" data-layout="classic" aria-label="Classic three-panel layout">
+          <svg viewBox="0 0 64 44" aria-hidden="true"><rect x="3" y="3" width="36" height="38" rx="1"/><rect x="42" y="3" width="19" height="18" rx="1"/><rect x="42" y="24" width="19" height="17" rx="1"/></svg>
+          <span>Classic</span>
+        </button>
+        <button class="layout" type="button" data-layout="duo" aria-label="Duo two-panel layout">
+          <svg viewBox="0 0 64 44" aria-hidden="true"><rect x="3" y="3" width="28" height="38" rx="1"/><rect x="34" y="3" width="27" height="38" rx="1"/></svg>
+          <span>Duo</span>
+        </button>
+        <button class="layout" type="button" data-layout="solo" aria-label="Solo full-bleed layout">
+          <svg viewBox="0 0 64 44" aria-hidden="true"><rect x="3" y="3" width="58" height="38" rx="1"/></svg>
+          <span>Solo</span>
+        </button>
+        <button class="layout" type="button" data-layout="quad" aria-label="Quad four-panel layout">
+          <svg viewBox="0 0 64 44" aria-hidden="true"><rect x="3" y="3" width="28" height="18" rx="1"/><rect x="34" y="3" width="27" height="18" rx="1"/><rect x="3" y="24" width="28" height="17" rx="1"/><rect x="34" y="24" width="27" height="17" rx="1"/></svg>
+          <span>Quad</span>
+        </button>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="step">3</span> Colour grade</h2>
+      <div class="grades" id="grades">
+        <button class="grade" type="button" data-grade="sunset">
+          <span class="swatch sw-sunset" aria-hidden="true"></span><span>Sunset</span>
+        </button>
+        <button class="grade" type="button" data-grade="neon">
+          <span class="swatch sw-neon" aria-hidden="true"></span><span>Neon Night</span>
+        </button>
+        <button class="grade" type="button" data-grade="pastel">
+          <span class="swatch sw-pastel" aria-hidden="true"></span><span>Pastel Day</span>
+        </button>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="step">4</span> Caption</h2>
+      <label class="field">Title
+        <input id="captionInput" type="text" maxlength="24" value="VICE HEAT" autocomplete="off">
+      </label>
+      <label class="field">Subtitle
+        <input id="subtitleInput" type="text" maxlength="48" value="WELCOME TO VICE CITY" autocomplete="off">
+      </label>
+      <label class="check"><input id="palmsToggle" type="checkbox" checked> Palm silhouettes</label>
+      <label class="check"><input id="grainToggle" type="checkbox" checked> Film grain &amp; vignette</label>
+      <label class="check"><input id="sunToggle" type="checkbox" checked> Retro sun</label>
+    </section>
+
+    <section>
+      <h2><span class="step">5</span> Selected panel</h2>
+      <p class="panel-name" id="panelName">Panel 1 &mdash; Hero</p>
+      <label class="field">Photo in this panel
+        <select id="panelPhoto"></select>
+      </label>
+      <label class="field">Zoom <span class="range-val" id="zoomVal">1.00&times;</span>
+        <input id="zoomRange" type="range" min="1" max="3" step="0.01" value="1">
+      </label>
+      <div class="pan-row">
+        <label class="field">Pan X
+          <input id="panX" type="range" min="0" max="1" step="0.01" value="0.5">
+        </label>
+        <label class="field">Pan Y
+          <input id="panY" type="range" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </div>
+      <div class="row">
+        <button id="fillAllBtn" type="button" class="mini">Use in every panel</button>
+        <button id="resetPanelBtn" type="button" class="mini">Reset crop</button>
+      </div>
+      <p class="hint">Tip: click a panel, then drag its photo to pan and scroll to zoom.</p>
+    </section>
+
+    <section>
+      <h2><span class="step">6</span> Export</h2>
+      <div class="sizes" id="sizes">
+        <button class="size" type="button" data-size="square">Square<br><b>1080 &times; 1080</b></button>
+        <button class="size" type="button" data-size="portrait">Portrait<br><b>1080 &times; 1350</b></button>
+        <button class="size" type="button" data-size="wide">Wide<br><b>1920 &times; 1080</b></button>
+      </div>
+      <button id="exportBtn" type="button" class="export">Export PNG</button>
+      <button id="exportAllBtn" type="button" class="ghost">Export all three sizes</button>
+      <p id="status" role="status"></p>
+      <div id="lastExport" class="last-export" hidden>
+        <span>Your last export</span>
+        <img id="lastExportImg" alt="Last exported cover">
+      </div>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <div class="canvas-wrap">
+      <canvas id="cover" width="1080" height="1080" aria-label="The cover preview"></canvas>
+    </div>
+    <p class="stage-hint">Click a panel to select it &middot; drag to pan &middot; scroll to zoom</p>
+  </section>
+</main>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
