@@ -1,8 +1,10 @@
 // VICE HEAT — the editor: loads photos, wires every control, renders the live
 // preview, and exports PNGs. Deterministic demo states come from ?shot= URL params
-// (shot=cover draws the cover full-frame, shot=editor shows the full studio).
+// (see shots.js: shot=cover draws the cover full-frame, shot=editor shows the
+// full studio).
 
 import { SIZES, GRADES, LAYOUTS, drawCover, panelRect, panelsForLayout } from './cover.js';
+import { shotMode, applyShotParams } from './shots.js';
 
 const $ = (id) => document.getElementById(id);
 const canvas = $('cover');
@@ -28,7 +30,7 @@ const photoLabels = { boulevard: 'Boulevard (sample)', pier: 'Pier (sample)' };
 let uploadCount = 0;
 
 const params = new URLSearchParams(location.search);
-const shotMode = params.get('shot') || '';
+const mode = shotMode(params);
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -410,33 +412,10 @@ function wire() {
   $('exportAllBtn').addEventListener('click', exportAll);
 }
 
-// ------------------------------------------------------------ demo states
+// ------------------------------------------------------------ boot
 
-function applyShotParams() {
-  const layout = params.get('layout');
-  if (layout && LAYOUTS[layout]) {
-    state.layout = layout;
-    state.panels = panelsForLayout(layout);
-  }
-  const grade = params.get('grade');
-  if (grade && GRADES[grade]) state.grade = grade;
-  const size = params.get('size');
-  if (size && SIZES[size]) state.size = size;
-  const caption = params.get('caption');
-  if (caption) state.caption = caption;
-  const subtitle = params.get('subtitle');
-  if (subtitle) state.subtitle = subtitle;
-  const photo = params.get('photo');
-  if (photo === 'boulevard' || photo === 'pier') {
-    state.panels.forEach((p) => {
-      p.photo = photo;
-    });
-  }
-  const toggles = { palms: 'palms', grain: 'grain', sun: 'sun' };
-  for (const [param, key] of Object.entries(toggles)) {
-    const v = params.get(param);
-    if (v === '0' || v === 'off') state[key] = false;
-  }
+/** Copies the demo state (if any) into the caption and toggle inputs. */
+function syncShotInputs() {
   $('captionInput').value = state.caption;
   $('subtitleInput').value = state.subtitle;
   $('palmsToggle').checked = state.palms;
@@ -446,11 +425,12 @@ function applyShotParams() {
 
 async function boot() {
   wire();
-  applyShotParams();
+  applyShotParams(state, params);
+  syncShotInputs();
   syncLayoutButtons();
   rebuildPhotoSelect();
   await loadSamples();
-  if (shotMode === 'cover') {
+  if (mode === 'cover') {
     // Full-frame cover: the canvas is the viewport, controls are hidden by CSS.
     document.body.classList.add('shot-cover');
     canvas.width = window.innerWidth;

@@ -1,6 +1,6 @@
 [![make.fun · gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![make.fun · rank](https://make.fun/badge/rank/Kopler12/kopler-gta6-cover-art.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![make.fun · reward](https://make.fun/badge/reward/Kopler12/kopler-gta6-cover-art.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+[![rank](https://make.fun/badge/gta6-cover-art-01/Kopler12/kopler-gta6-cover-art/rank.svg)](https://make.fun/bounty/gta6-cover-art-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+[![reward](https://make.fun/badge/gta6-cover-art-01/Kopler12/kopler-gta6-cover-art/reward.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
 
 # VICE HEAT — GTA-style Cover Maker
 
@@ -50,8 +50,10 @@ network: every file the app loads is under `app/`.
   palms, skyline, halftone, grain, vignette and the title lettering, all
   drawn on a 2D canvas at any size.
 - `app/src/main.js` — the editor: photo loading, layout/grade/caption
-  controls, drag-to-pan and scroll-to-zoom on the preview, PNG export, and
-  the deterministic `?shot=` demo states the screenshots use.
+  controls, drag-to-pan and scroll-to-zoom on the preview, PNG export.
+- `app/src/shots.js` — the deterministic `?shot=` demo states the
+  screenshots use: `shot=cover` draws the cover full-frame, `shot=editor`
+  shows the full studio.
 - `app/samples/` — two sample photos made for make.fun, free to use.
 - `main.ts` — the entry program (Node 22, standard library only): copies
   `app/` and `screenshots/` to the output directory and writes
